@@ -57,6 +57,7 @@ Results reported below show accuracy for few-shot scenarios as well as base and 
 | [KgCoOp](https://arxiv.org/abs/2303.13283)                |  50.85  |  53.18  |  57.82  |  62.08  |  62.84  |
 | [ProGrad](https://arxiv.org/abs/2205.14865)               |  51.88  |  54.71  |  60.42  |  65.61  |  67.13  |
 | [**BiomedCoOp**](https://arxiv.org/abs/2411.15232)  | **57.03** | **59.13** | **63.95** | **68.32** | **72.42** |
+
 ### Base-to-Novel Generalization
 | Name                                                      | Base Acc. | Novel Acc. |    HM     |  
 |-----------------------------------------------------------|:---------:|:----------:|:---------:|  
@@ -66,6 +67,7 @@ Results reported below show accuracy for few-shot scenarios as well as base and 
 | [KgCoOp](https://arxiv.org/abs/2303.13283)                |   68.36   |   64.08    |   64.61   |  
 | [ProGrad](https://arxiv.org/abs/2205.14865)               |   71.67   |   66.93    |   67.43   |  
 | [**BiomedCoOp (ours)**](https://arxiv.org/abs/2411.15232) |   **76.26**   | **73.92**  | **75.07** |  
+
 
 ## Model Checkpoints and Logs
 | Name                                                      | Few-Shot | Base-to-Novel |  

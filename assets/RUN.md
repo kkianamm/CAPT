@@ -96,6 +96,70 @@ python parse_test_res.py output/base2new/test_new/btmri/shots_16/BiomedCoOp_Biom
 
 The above steps can be repeated for other individual datasets.
 
+#### (3) Domain Generalization setting
+
+In the domain generalization setting, the model is trained on a source dataset and evaluated on unseen target datasets without any target-domain fine-tuning.
+
+```bash
+# Source dataset values include [busi, btmri]
+
+# Source-to-target mappings:
+# busi  -> [buid, busb, busbra, udiat]
+# btmri -> [btmri_p, btmri_m, btmri_n, btmri_b, btmri_s, brisc]
+
+# CLIP Models include [CLIP, PubMedCLIP, PMCCLIP, BiomedCLIP]
+
+# trains on the source dataset and evaluates on all target domains
+CUDA_VISIBLE_DEVICES=<GPU number> bash scripts/biomedcoop/dg.sh <data directory> <source dataset> <nb of shots> <clip model to use>
+# Example on BUSI using 16 shots and the BiomedCLIP model on GPU 0
+CUDA_VISIBLE_DEVICES=0 bash scripts/biomedcoop/dg.sh data busi 16 BiomedCLIP
+```
+
+#### Averaging results over 3 seeds:
+Once the above trainings and evaluations are completed, the `output/` directory should have the following structure:
+
+```
+output
+|–– dg/
+|   |–– busi/
+|   |   |–– shots_16/
+|   |   |   |–– BiomedCoOp_BiomedCLIP/
+|   |   |   |   |–– nctx4_cscFalse_ctpend/
+|   |   |   |   |   |–– seed1/
+|   |   |   |   |   |–– seed2/
+|   |   |   |   |   |–– seed3/
+|   |–– buid/
+|   |   |–– shots_16/
+|   |   |   |–– BiomedCoOp_BiomedCLIP/
+|   |   |   |   |–– nctx4_cscFalse_ctpend/
+|   |   |   |   |   |–– seed1/
+|   |   |   |   |   |–– seed2/
+|   |   |   |   |   |–– seed3/
+|   |–– busb/
+|   |–– busbra/
+|   |–– udiat/
+```
+
+Now use the script `parse_test_res.py` and run the commands below to calculate the averaged results on each target domain:
+```bash
+# Example: averaged DG results for the BUSI -> BUID target domain
+python parse_test_res.py output/dg/buid/shots_16/BiomedCoOp_BiomedCLIP/nctx4_cscFalse_ctpend --test-log
+
+# To parse all BUSI target domains
+for TARGET in buid busb busbra udiat
+do
+    python parse_test_res.py output/dg/${TARGET}/shots_16/BiomedCoOp_BiomedCLIP/nctx4_cscFalse_ctpend --test-log
+done
+
+# To parse all BTMRI target domains
+for TARGET in btmri_p btmri_m btmri_n btmri_b btmri_s brisc
+do
+    python parse_test_res.py output/dg/${TARGET}/shots_16/BiomedCoOp_BiomedCLIP/nctx4_cscFalse_ctpend --test-log
+done
+```
+
+The above steps can be repeated for each supported source dataset.
+
 #### Reproducing Results
 
 Our trained model checkpoints can be found on HuggingFace [here](https://huggingface.co/TahaKoleilat/BiomedCoOp)
@@ -116,6 +180,15 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/biomedcoop/eval_fewshot.sh data btmri 16
 CUDA_VISIBLE_DEVICES=<GPU number> bash scripts/biomedcoop/eval_base2new.sh <data directory> <dataset> <nb of shots>
 # Example on BTMRI using 16 shots and the BiomedCLIP model on GPU 0
 CUDA_VISIBLE_DEVICES=0 bash scripts/biomedcoop/eval_base2new.sh data btmri 16
+```
+
+
+##### (3) Domain Generalization
+
+```bash
+CUDA_VISIBLE_DEVICES=<GPU number> bash scripts/biomedcoop/eval_dg.sh <data directory> <source dataset> <clip model to use>
+# Example on BUSI using the BiomedCLIP model on GPU 0
+CUDA_VISIBLE_DEVICES=0 bash scripts/biomedcoop/eval_dg.sh data busi BiomedCLIP
 ```
 
 #### Training and Evaluating other techniques

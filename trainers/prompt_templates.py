@@ -2,11 +2,17 @@
 
 CUSTOM_TEMPLATES = {
     "BUSI": "a photo of a {}.",
+    "BUID": "a photo of a {}.",
+    "BUSBRA": "a photo of a {}.",
+    "UDIAT": "a photo of a {}.",
     "CTKidney": "a photo of a {}.",
     "CHMNIST": "a photo of a {}.",
     "LungColon": "a photo of a {}.",
     "COVID_19": "a photo of a {}.",
     "BTMRI": "a photo of a {}.",
+    "BRISC": "a photo of a {}.",
+    "BTMRI_P": "a photo of a {}.",
+    "BTMRI_S": "a photo of a {}.",
     "Kvasir": "a photo of a {}.",
     "KneeXray": "a photo of a {}.",
     "RETINA": "a photo of a {}.",

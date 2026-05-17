@@ -4,7 +4,12 @@ Our study includes 11 biomedical image classification datasets. Place all the da
 
 ```
 data/
+|–– BRISC/
 |–– BTMRI/
+|–– BTMRI-P/
+|–– BTMRI-S/
+|–– BUID/
+|–– BUSBRA/
 |–– BUSI/
 |–– CHMNIST/
 |–– COVID_19/
@@ -15,6 +20,7 @@ data/
 |–– LungColon/
 |–– OCTMNIST/
 |–– RETINA/
+|–– UDIAT/
 ```
 
 ## Datasets Description
@@ -27,8 +33,14 @@ data/
 | Histopathology              | Lung, Colon       | [LC25000](https://www.kaggle.com/datasets/andrewmvd/lung-and-colon-cancer-histopathological-images)| Colon Adenocarcinoma, Colon Benign Tissue, Lung Adenocarcinoma, Lung Benign Tissue, Lung Squamous Cell Carcinoma   | 12500/5000/7500      |
 | Histopathology              | Colorectal        | [CHMNIST](https://www.kaggle.com/datasets/kmader/colorectal-histology-mnist)                        | Adipose Tissue, Complex Stroma, Debris, Empty Background, Immune Cells, Normal Mucosal Glands, Simple Stroma, Tumor Epithelium | 2496/1000/1504       |
 | Magnetic Resonance Imaging  | Brain             | [BTMRI](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)                  | Glioma Tumor, Meningioma Tumor, Normal Brain, Pituitary Tumor                                                     | 2854/1141/1717       |
+| Magnetic Resonance Imaging  | Brain             | [BTMRI-P](https://www.kaggle.com/datasets/pradeep2665/brain-mri)                  | Glioma Tumor, Meningioma Tumor, Normal Brain, Pituitary Tumor                                                     | 8000/0/1000       |
+| Magnetic Resonance Imaging  | Brain             | [BTMRI-S](https://www.kaggle.com/datasets/mohamedmetwalysherif/braintumordataset)                  | Glioma Tumor, Meningioma Tumor, Normal Brain, Pituitary Tumor                                                     | 2451/0/529       |
+| Magnetic Resonance Imaging  | Brain             | [BRISC](https://www.kaggle.com/datasets/briscdataset/brisc2025)                  | Glioma Tumor, Meningioma Tumor, Normal Brain, Pituitary Tumor                                                     | 2498/0/1000       |
 | Optical Coherence Tomography| Retina            | [OCTMNIST](https://medmnist.com/)                                                                 | Choroidal Neovascularization, Drusen, Diabetic Macular Edema, Normal                                             | 97477/10832/1000     |
 | Ultrasound                  | Breast            | [BUSI](https://www.kaggle.com/datasets/aryashah2k/breast-ultrasound-images-dataset)                | Benign Tumors, Malignant Tumors, Normal Scans                                                                    | 389/155/236          |
+| Ultrasound                  | Breast            | [BUID](https://qamebi.com/breast-ultrasound-images-database)                | Benign Tumors, Malignant Tumors                                                                    | 162/0/36          |
+| Ultrasound                  | Breast            | [BUSBRA](https://www.kaggle.com/datasets/orvile/bus-bra-a-breast-ultrasound-dataset)                | Benign Tumors, Malignant Tumors                                                                   | 1311/0/283          |
+| Ultrasound                  | Breast            | [UDIAT](https://www.kaggle.com/datasets/ayush02102001/udiat-segmentation-dataset)                | Benign Tumors, Malignant Tumors                                                                | 113/0/26           |
 | X-Ray                       | Chest             | [COVID-QU-Ex](https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database)          | COVID-19, Lung Opacity, Normal Lungs, Viral Pneumonia                                                             | 10582/4232/6351      |
 | X-Ray                       | Knee              | [KneeXray](https://www.kaggle.com/datasets/shashwatwork/knee-osteoarthritis-dataset-with-severity) | No, Doubtful, Minimal, Moderate, and Severe Osteoarthritis                                                       | 5778/826/1656        |
 
@@ -47,6 +59,15 @@ All the datasets can be found [here](https://huggingface.co/datasets/TahaKoleila
 - <b>LungColon</b> [[Drive](https://drive.google.com/file/d/1YIu5fqMXgyemisiL1L1HCvES2nVpCtun/view?usp=sharing) | [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/LungColon.zip)]
 - <b>OCTMNIST</b> [[Drive](https://drive.google.com/file/d/1mYZNWxbPxnnVvcwHQYybA8gdMzQAoOem/view?usp=sharing) | [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/OCTMNIST.zip)]
 - <b>RETINA</b> [[Drive](https://drive.google.com/file/d/18U-Gc22h5QryomNNzY4r4Qfrq52yf5EO/view?usp=sharing) | [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/RETINA.zip)]
+
+#### Domain Generalization Datasets
+
+- <b>BTMRI-P</b> [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/BTMRI-P.zip)
+- <b>BTMRI-S</b> [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/BTMRI-S.zip)
+- <b>BRISC</b> [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/BRISC.zip)
+- <b>BUID</b> [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/BUID.zip)
+- <b>BUSBRA</b> [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/BUSBRA.zip)
+- <b>UDIAT</b> [HuggingFace](https://huggingface.co/datasets/TahaKoleilat/BiomedCoOp/resolve/main/UDIAT.zip)
 
 After downloading each dataset, unzip and place each under its respective directory like the following
 

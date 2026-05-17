@@ -9,10 +9,22 @@ from .covid import COVID_19
 from .dermamnist import DermaMNIST
 from .octmnist import OCTMNIST
 from .chmnist import CHMNIST
+from .btmri_p import BTMRI_P
+from .btmri_s import BTMRI_S
+from .brisc import BRISC
+from .buid import BUID
+from .busbra import BUSBRA
+from .udiat import UDIAT
 
 dataset_list = {
                 "BUSI": BUSI,
+                "BUID": BUID,
+                "BUSBRA": BUSBRA,
+                "UDIAT": UDIAT,
                 "BTMRI": BTMRI,
+                "BTMRI_P": BTMRI_P,
+                "BTMRI_S": BTMRI_S,
+                "BRISC": BRISC,
                 "CTKidney": CTKidney,
                 "KneeXray": KneeXray,
                 "Kvasir": Kvasir,
@@ -21,7 +33,7 @@ dataset_list = {
                 "COVID_19": COVID_19,
                 "DermaMNIST": DermaMNIST,
                 "OCTMNIST": OCTMNIST,
-                "CHMNIST": CHMNIST 
+                "CHMNIST": CHMNIST
                 }
 
 
