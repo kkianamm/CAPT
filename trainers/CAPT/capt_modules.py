@@ -17,11 +17,11 @@ The four ideas from the paper are implemented here:
 
 Design notes / honest deviations from the original repo
 -------------------------------------------------------
-* The original CAPT builds its Confusion Bank from a PromptKD teacher. There is
-  no public ViT-L BiomedCLIP teacher, so we build the bank from a *base
-  prompt-tuned BiomedCLIP model* (BiomedCoOp or CoOp). The CAPT appendix (their
-  Table 9) shows the bank can be built from CoOp/MaPLe/CLIP/TAC as well, so this
-  is a supported instantiation rather than a hack.
+* The original CAPT builds its Confusion Bank from a PromptKD teacher, but its
+  Appendix B / Table 9 shows the bank can be built from CLIP, CoOp, MaPLe or TAC
+  too -- the "CLIP" row being ZERO-SHOT CLIP with no training. We therefore build
+  the bank from *frozen zero-shot BiomedCLIP* (class prompt ensemble + frozen
+  visual encoder). No BiomedCoOp/CoOp checkpoint is required or used.
 * The original CAPT generates commonality/difference prompts with a live LLM
   (chain-of-thought). We instead reuse the GPT-4 prompt ensemble that BiomedCoOp
   already ships (``BIOMEDCOOP_TEMPLATES``, 50 clinical prompts / class) and form
