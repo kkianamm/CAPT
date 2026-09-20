@@ -14,7 +14,7 @@ INPUT:
 
 OPTIM:
   NAME: "sgd"
-  LR: 0.0025
+  LR: 0.0005
   MAX_EPOCH: 25
   LR_SCHEDULER: "cosine"
   WARMUP_EPOCH: 1
