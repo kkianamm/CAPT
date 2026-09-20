@@ -203,6 +203,13 @@ class CustomCLIP(nn.Module):
         return self.logit_scale.exp() * img @ self.zeroshot_text.t(), img
 
     def forward(self, image, label=None):
+        # Whether this is a training forward is decided by the presence of a
+        # label + a built bank -- NOT by self.training. Dassl only flips the
+        # registered CAPT ModuleDict to eval() at test time, so self.training on
+        # this wrapper is unreliable during evaluation.
+        is_train = label is not None
+        use_bank = is_train and (self.bank is not None)
+
         logit_scale = self.logit_scale
         image = image.type(self.dtype)
 
@@ -212,13 +219,12 @@ class CustomCLIP(nn.Module):
         conf = base_logits.softmax(1)
 
         # --- SEM: pseudo-GT + confusion pairs (statistics from the frozen bank) ---
-        use_stats = self.training and (self.bank is not None)
-        count = self.bank.count if use_stats else None
+        count = self.bank.count if use_bank else None
         pseudo, pairs = self.sem.pairs_and_scores(conf, count)
         sem_feat = self.sem.semantic_feature(pseudo, pairs)
 
         # --- SAM: representative confusing samples + Diff-Manner Adapter ---
-        if self.training and self.bank is not None:
+        if use_bank:
             conf_feat, sim = self.bank.representative(img_feat.detach(), pairs)
         else:
             conf_feat = torch.zeros_like(img_feat)
@@ -236,7 +242,8 @@ class CustomCLIP(nn.Module):
 
         logits = logit_scale.exp() * refined @ text_feat.t()
 
-        if self.training:
+        # Return the loss only when a label was actually provided (training).
+        if label is not None:
             loss_ce = F.cross_entropy(logits, label)
             loss_conf = confusion_infonce(refined, text_feat, label, pairs, logit_scale)
             loss = loss_ce + self.cfg.TRAINER.CAPT.CONF_LAMBDA * loss_conf
