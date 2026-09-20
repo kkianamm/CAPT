@@ -91,7 +91,13 @@ class PromptLearner(nn.Module):
         prompts = [prompt_prefix + " " + name + "." for name in classnames]
         tokenized_prompts = torch.cat([self.tokenizer(p) for p in prompts])
         with torch.no_grad():
-            embedding = biomedclip_model.text.transformer.embeddings.word_embeddings(tokenized_prompts).type(dtype)
+            embedding_layer = biomedclip_model.text.transformer.embeddings.word_embeddings
+            device = embedding_layer.weight.device
+
+            tokenized_prompts = tokenized_prompts.to(device)
+
+            with torch.no_grad():
+                embedding = embedding_layer(tokenized_prompts).type(dtype)
 
         self.register_buffer("token_prefix", embedding[:, :1, :])
         self.register_buffer("token_suffix", embedding[:, 1 + n_ctx:, :])
