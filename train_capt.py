@@ -1,13 +1,9 @@
 """
 train_capt.py
 =============
-Drop-in entry point for CAPT on BiomedCLIP. It is a copy of BiomedCoOp's
-``train.py`` with (1) the ``CAPT`` config node registered in ``extend_cfg`` and
-(2) the CAPT trainer imported so Dassl can find it. Use this instead of
-``train.py`` when the trainer is ``CAPT_BiomedCLIP``.
-
-Everything else (dataset registration, argument parsing) is unchanged, so all
-BiomedCoOp datasets and scripts keep working.
+Entry point for CAPT on BiomedCLIP. CAPT is self-contained: it uses BiomedCLIP
+directly and does NOT import, launch, or depend on BiomedCoOp/CoOp. Run
+BiomedCoOp separately with the original ``train.py`` and the biomedcoop scripts.
 """
 
 import argparse
@@ -30,10 +26,7 @@ import datasets.kneexray
 import datasets.dermamnist
 import datasets.octmnist
 
-# base trainers (needed to build the Stage-1 model / for comparison)
-import trainers.CoOp.coop_biomedclip
-import trainers.BiomedCoOp.biomedcoop_biomedclip
-# CAPT trainer
+# CAPT trainer only
 import trainers.CAPT.capt_biomedclip
 
 
@@ -69,41 +62,20 @@ def extend_cfg(cfg):
 
     cfg.DATASET.SUBSAMPLE_CLASSES = "all"  # all, base or new
 
-    # ---- CoOp (base model option) ----
-    cfg.TRAINER.COOP = CN()
-    cfg.TRAINER.COOP.N_CTX = 4
-    cfg.TRAINER.COOP.CSC = False
-    cfg.TRAINER.COOP.CTX_INIT = "a photo of a"
-    cfg.TRAINER.COOP.PREC = "fp32"
-    cfg.TRAINER.COOP.CLASS_TOKEN_POSITION = "end"
-
-    # ---- BiomedCoOp (base model option / comparison) ----
-    cfg.TRAINER.BIOMEDCOOP = CN()
-    cfg.TRAINER.BIOMEDCOOP.CTX_INIT = "a photo of a"
-    cfg.TRAINER.BIOMEDCOOP.CSC = False
-    cfg.TRAINER.BIOMEDCOOP.CLASS_TOKEN_POSITION = "end"
-    cfg.TRAINER.BIOMEDCOOP.N_CTX = 4
-    cfg.TRAINER.BIOMEDCOOP.PREC = "fp32"
-    cfg.TRAINER.BIOMEDCOOP.SCCM_LAMBDA = 2.0
-    cfg.TRAINER.BIOMEDCOOP.KDSP_LAMBDA = 0.5
-    cfg.TRAINER.BIOMEDCOOP.TAU = 1.5
-    cfg.TRAINER.BIOMEDCOOP.N_PROMPTS = 50
-
-    # ---- CAPT ----
+    # ---- CAPT (self-contained, BiomedCLIP-only) ----
     cfg.TRAINER.CAPT = CN()
     cfg.TRAINER.CAPT.CTX_INIT = "a photo of a"
     cfg.TRAINER.CAPT.CSC = False
     cfg.TRAINER.CAPT.CLASS_TOKEN_POSITION = "end"
     cfg.TRAINER.CAPT.N_CTX = 4
-    cfg.TRAINER.CAPT.PREC = "fp32"
-    cfg.TRAINER.CAPT.K_PAIRS = 3          # confusion pairs per sample (<= n_cls-1)
-    cfg.TRAINER.CAPT.ALPHA_S = 5.0        # dynamic alpha scale  (Eq. 13)
-    cfg.TRAINER.CAPT.ALPHA_GAMMA = 0.5    # dynamic alpha exponent
-    cfg.TRAINER.CAPT.MGDE_TOPK = 2        # experts kept by the router
-    cfg.TRAINER.CAPT.BETA = 0.1           # residual strength of the MGDE output
-    cfg.TRAINER.CAPT.CONF_LAMBDA = 1.0    # weight of the confusion InfoNCE loss
-    cfg.TRAINER.CAPT.BASE_CKPT = ""       # dir of the Stage-1 base checkpoint
-    cfg.TRAINER.CAPT.BASE_EPOCH = None    # epoch of the base checkpoint
+    cfg.TRAINER.CAPT.PREC = "fp32"          # fp16, fp32, amp
+    cfg.TRAINER.CAPT.PROMPT_TUNING = True   # learn the CAPT context (CoOp-style)
+    cfg.TRAINER.CAPT.K_PAIRS = 3            # confusion pairs per sample (<= n_cls-1)
+    cfg.TRAINER.CAPT.ALPHA_S = 5.0          # dynamic alpha scale   (paper Eq. 13)
+    cfg.TRAINER.CAPT.ALPHA_GAMMA = 0.5      # dynamic alpha exponent
+    cfg.TRAINER.CAPT.MGDE_TOPK = 2          # experts kept by the router
+    cfg.TRAINER.CAPT.BETA = 0.1             # residual strength of the MGDE output
+    cfg.TRAINER.CAPT.CONF_LAMBDA = 1.0      # weight of the confusion InfoNCE loss
 
 
 def setup_cfg(args):
