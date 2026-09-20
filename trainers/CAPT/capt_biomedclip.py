@@ -69,6 +69,9 @@ class PromptLearner(nn.Module):
             ctx_init = ctx_init.replace("_", " ")
             prompt = self.tokenizer(ctx_init)
             with torch.no_grad():
+                device = biomedclip_model.text.transformer.embeddings.word_embeddings.weight.device
+                prompt = prompt.to(device)
+                
                 embedding = biomedclip_model.text.transformer.embeddings.word_embeddings(prompt).type(dtype)
             ctx_vectors = embedding[0, 1: 1 + n_ctx, :]
             prompt_prefix = ctx_init
